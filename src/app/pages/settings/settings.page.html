@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configurações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="page-shell">
+    <section class="page-title">
+      <h1>Preferências</h1>
+      <p>Opções salvas localmente no dispositivo.</p>
+    </section>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Atualização</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-select
+            label="Frequência"
+            labelPlacement="stacked"
+            [(ngModel)]="settings.updateFrequency"
+            (ionChange)="saveSettings()"
+          >
+            <ion-select-option value="manual">Manual</ion-select-option>
+            <ion-select-option value="hourly">A cada hora</ion-select-option>
+            <ion-select-option value="daily">Diariamente</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Notificações</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-toggle
+            justify="space-between"
+            [(ngModel)]="settings.notificationsEnabled"
+            (ionChange)="saveSettings()"
+          >
+            Ativar notificações
+          </ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </main>
+</ion-content>

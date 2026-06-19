@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gráfico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="page-shell">
+    <section class="page-title">
+      <h1>Cotação</h1>
+      <p>Variação gerada com as taxas armazenadas no aplicativo.</p>
+    </section>
+
+    <ion-card>
+      <ion-card-content>
+        <div class="chart-controls">
+          <ion-item lines="none">
+            <ion-select label="Origem" labelPlacement="stacked" [(ngModel)]="selectedBase" (ionChange)="onChartOptionsChange()">
+              <ion-select-option *ngFor="let currency of currencies; trackBy: trackByCode" [value]="currency.code">
+                {{ currency.code }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-select label="Destino" labelPlacement="stacked" [(ngModel)]="selectedTarget" (ionChange)="onChartOptionsChange()">
+              <ion-select-option *ngFor="let currency of currencies; trackBy: trackByCode" [value]="currency.code">
+                {{ currency.code }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-select label="Período" labelPlacement="stacked" [(ngModel)]="range" (ionChange)="onChartOptionsChange()">
+              <ion-select-option [value]="7">Últimos 7 dias</ion-select-option>
+              <ion-select-option [value]="30">Últimos 30 dias</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <div class="chart-wrapper">
+          <canvas #ratesCanvas></canvas>
+        </div>
+        <p class="chart-message">{{ chartMessage }}</p>
+      </ion-card-content>
+    </ion-card>
+  </main>
+</ion-content>

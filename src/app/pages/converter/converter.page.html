@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>IonicCoin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="refreshRates(true)" [disabled]="isLoadingRates">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="page-shell">
+    <section class="page-title">
+      <h1>Conversor de moedas</h1>
+      <p>Taxas em tempo real com cache local para consultas sem internet.</p>
+    </section>
+
+    <ion-card>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-input
+            label="Valor"
+            labelPlacement="stacked"
+            type="number"
+            min="0"
+            inputmode="decimal"
+            [(ngModel)]="amount"
+          ></ion-input>
+        </ion-item>
+
+        <ion-searchbar
+          [value]="currencySearch"
+          placeholder="Pesquisar por código ou nome"
+          debounce="200"
+          (ionInput)="onSearchChange($event)"
+        ></ion-searchbar>
+
+        <div class="currency-grid">
+          <ion-item lines="none">
+            <ion-select label="Origem" labelPlacement="stacked" [(ngModel)]="fromCurrency" (ionChange)="onCurrencyChange()">
+              <ion-select-option *ngFor="let currency of filteredCurrencies; trackBy: trackByCode" [value]="currency.code">
+                {{ currency.code }} - {{ currency.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-button class="swap-button" fill="outline" color="secondary" (click)="swapCurrencies()">
+            <ion-icon slot="start" name="swap-horizontal-outline"></ion-icon>
+            Trocar
+          </ion-button>
+
+          <ion-item lines="none">
+            <ion-select label="Destino" labelPlacement="stacked" [(ngModel)]="toCurrency">
+              <ion-select-option *ngFor="let currency of filteredCurrencies; trackBy: trackByCode" [value]="currency.code">
+                {{ currency.code }} - {{ currency.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <ion-button expand="block" color="primary" class="convert-button" (click)="convert()">
+          Converter
+        </ion-button>
+
+        <p class="rates-message" *ngIf="ratesMessage">
+          {{ ratesMessage }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="result-card" *ngIf="conversion">
+      <ion-card-header>
+        <ion-card-title>Resultado</ion-card-title>
+        <ion-card-subtitle>{{ conversion.amount }} {{ conversion.from }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <strong class="result-value">
+          {{ formatCurrency(conversion.result, conversion.to) }}
+        </strong>
+        <span class="rate-line">
+          1 {{ conversion.from }} = {{ conversion.rate | number:'1.4-6' }} {{ conversion.to }}
+        </span>
+      </ion-card-content>
+    </ion-card>
+  </main>
+</ion-content>

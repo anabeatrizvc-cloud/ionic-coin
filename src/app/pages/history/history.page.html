@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Histórico</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" [disabled]="!history.length" (click)="confirmClearHistory()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="page-shell">
+    <section class="page-title">
+      <h1>Conversões salvas</h1>
+      <p>Registros armazenados no dispositivo.</p>
+    </section>
+
+    <ion-list *ngIf="history.length; else emptyHistory">
+      <ion-item *ngFor="let item of history; trackBy: trackById">
+        <ion-label>
+          <h2>{{ item.amount }} {{ item.from }} → {{ item.to }}</h2>
+          <p>{{ formatDate(item.date) }}</p>
+          <p class="rate-text">Taxa: {{ item.rate | number:'1.4-6' }}</p>
+          <p *ngIf="item.offline" class="offline-text">Conversão feita com cache local</p>
+        </ion-label>
+        <ion-note slot="end" color="success">
+          {{ formatCurrency(item.result, item.to) }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #emptyHistory>
+      <ion-card>
+        <ion-card-content class="empty-state">
+          Nenhuma conversão foi salva ainda.
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </main>
+</ion-content>
